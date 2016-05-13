@@ -1,4 +1,4 @@
-var OBEUTypes = require('obeu-types');
+//var OBEUTypes = require('obeu-types');
 var _ = require('lodash');
 
 ;(function(angular) {
@@ -25,9 +25,9 @@ var _ = require('lodash');
                   return _.endsWith(sugg, ':');
                 },
                 setVal: function(val, clear) {
-                  this.field.type = val;
+                  this.obeuField.type = val;
                   if (clear) {
-                    this.field.options = {};
+                    this.obeuField.options = {};
                   }
                   this.onChanged();
                   $scope.$applyAsync();
@@ -37,7 +37,7 @@ var _ = require('lodash');
           ],
           controllerAs: 'ctrl',
           bindToController: {
-            field: '=',
+            obeuField: '=',
             onChanged: '&'
           },
           link: function($scope, element, attr, ctrl) {
@@ -76,10 +76,10 @@ var _ = require('lodash');
                 }
               }
             });
-            if (ctrl.field.type) {
-              ctrl.setSugg(ctrl.field.type);
-              $(input).typeahead('val', ctrl.field.type.replace(/:/g,sep));
-              ctrl.setVal(ctrl.field.type, false);
+            if (ctrl.obeuField.type) {
+              ctrl.setSugg(ctrl.obeuField.type);
+              $(input).typeahead('val', ctrl.obeuField.type.replace(/:/g,sep));
+              ctrl.setVal(ctrl.obeuField.type, false);
             }
             $(input).bind('typeahead:select', function(ev, sugg) {
               ctrl.setSugg(sugg.val);

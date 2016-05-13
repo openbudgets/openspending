@@ -25,7 +25,7 @@
             <input ng-model="field.title" type="text" class="form-control">
           </div>
           <os-datatype data-field="field" data-on-changed="onConceptChanged(field)"></os-datatype>
-	  <obeu-datatype data-field="field" data-on-changed="onConceptChanged(field)"></obeu-datatype>
+	  <obeu-datatype data-field="obeuField" data-on-changed="onObeuConceptChanged(obeuField)"></obeu-datatype>
           <p ng-repeat="error in field.errors" class="error">
             <i class="glyphicon glyphicon-warning-sign"></i>&nbsp;{{ error }}
           </p>
