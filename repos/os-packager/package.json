@@ -54,7 +54,7 @@
     "nconf": "^0.8.2",
     "nunjucks": "^2.1.0",
       "os-types": "^1.1.0",
-      "obeu-types": "^0.1.0"; 
+      "obeu-types": "^0.1.0", 
     "papaparse": "^4.1.2",
     "request": "^2.65.0",
     "treo": "^0.5.1",
