@@ -1,0 +1,86 @@
+{% raw %}
+<section id="step2-wrapper">
+<div class="row" ng-repeat="resource in resources track by $index">
+  <div ng-if="!!resource.source.url" class="col-xs-12 margin-bottom-8">
+    <a href="{{ 'http://datapipes.okfnlabs.org/csv/html?url=' + resource.source.url }}" target="_blank">
+      <i class="os-icon os-icon-file margin-right-4"></i>View this file
+    </a>
+  </div>
+
+  <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" ng-repeat="field in resource.fields track by $index"
+    ng-init="fieldState = {index: $index}">
+    <div class="panel panel-inverse">
+      <div class="panel-heading">
+        <a ng-click="fieldState.editDescription = !fieldState.editDescription"
+          href="javascript:void(0)" class="pull-right" title="Add/Edit Description"><i class="fa fa-sticky-note-o"></i></a>
+        <h3 class="panel-title">{{ field.name }}</h3>
+      </div>
+      <div class="panel-body">
+        <div class="x-data-sample">
+          <div ng-repeat="datum in field.data track by $index">{{ datum }}</div>
+        </div>
+        <div class="x-field-info">
+          <div>
+            <label class="control-label">Title</label>
+            <input ng-model="field.title" type="text" class="form-control">
+          </div>
+          <os-datatype data-field="field" data-on-changed="onConceptChanged(field)"></os-datatype>
+	  <obeu-datatype data-field="field" data-on-changed="onConceptChanged(field)"></obeu-datatype>
+          <p ng-repeat="error in field.errors" class="error">
+            <i class="glyphicon glyphicon-warning-sign"></i>&nbsp;{{ error }}
+          </p>
+          <!--<div>-->
+            <!--<label class="control-label">Data type</label>-->
+            <!--<select ng-model="field.type" class="form-control"-->
+              <!--ng-options="item.id as item.name for item in (field | fieldTypes)"></select>-->
+          <!--</div>-->
+          <div>
+            <!--<label class="control-label">Concept</label>-->
+            <!--<select ng-model="field.concept" class="form-control x-field-info-concept"-->
+              <!--ng-change="onConceptChanged(field)"-->
+              <!--ng-options="item.id as item.name for item in field.allowedConcepts"></select>-->
+
+            <div ng-repeat="option in field.additionalOptions" class="margin-top-8">
+              <div>
+                <label class="control-label">{{ option.title }}</label>
+              </div>
+              <div ng-if="option.values">
+                <select ng-model="field.options[option.name]" class="form-control"
+                  ng-options="item.value as item.name for item in (option.values | orderBy:'name')"></select>
+              </div>
+              <div ng-if="!option.values">
+                <input type="{{option.type || text}}" ng-model="field.options[option.name]" class="form-control">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="x-field-description fade-animation" ng-if="fieldState.editDescription">
+          <textarea ng-model="field.description" placeholder="Enter description for this field..."
+            class="form-control form-control-inverse"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div>
+  <div ng-if="!state.status" class="alert alert-default">
+    <i class="fa fa-2x fa-info-circle vertical-align-middle margin-right-4"></i>
+    You should map at least a <b>'value'</b> and a <b>'date'</b> to continue.
+  </div>
+
+  <div ng-if="state.status" class="alert alert-success">
+    <i class="fa fa-2x fa-check-circle-o vertical-align-middle margin-right-4"></i>
+    Now that you have modeled your resource, you can continue to the next step.
+  </div>
+
+  <div ng-if="state.status" class="row form-group">
+    <div class="col-xs-12">
+      <button id="step2-button-next" ng-click="goToNextStep()" type="button" class="btn btn-inverse btn-lg">
+        Continue&nbsp;&nbsp;<i class="fa fa-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+</div>
+</section>
+{% endraw %}
