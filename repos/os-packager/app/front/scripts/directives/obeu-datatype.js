@@ -1,4 +1,4 @@
-var OSTypes = require('os-types');
+var OBEUTypes = require('obeu-types');
 var _ = require('lodash');
 
 ;(function(angular) {
@@ -43,7 +43,7 @@ var _ = require('lodash');
           link: function($scope, element, attr, ctrl) {
             var input = element.find('.typeahead')[0];
             var clear = element.find('.clear')[0];
-            var ot = new OSTypes();
+            var ot = new OBEUTypes();
             var sep = ' ❯ ';
             $(input).typeahead({
               minLength: 0,
