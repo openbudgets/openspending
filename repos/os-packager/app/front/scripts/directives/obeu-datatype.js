@@ -866,9 +866,9 @@ var _ = require('lodash');
                   return _.endsWith(sugg, ':');
                 },
                 setVal: function(val, clear) {
-                  this.obeuField.type = val;
+                  this.field.type = val;
                   if (clear) {
-                    this.obeuField.options = {};
+                    this.field.options = {};
                   }
                   this.onChanged();
                   $scope.$applyAsync();
@@ -876,12 +876,12 @@ var _ = require('lodash');
               };
             }
           ],
-          controllerAs: 'ctrl',
+          controllerAs: 'obeuCtrl',
           bindToController: {
-            obeuField: '=',
+            field: '=',
             onChanged: '&'
           },
-          link: function($scope, element, attr, ctrl) {
+          link: function($scope, element, attr, obeuCtrl) {
             var input = element.find('.typeahead')[0];
             var clear = element.find('.clear')[0];
             var ot = new OBEUTypes();
@@ -917,13 +917,13 @@ var _ = require('lodash');
                 }
               }
             });
-            if (ctrl.obeuField.type) {
-              ctrl.setSugg(ctrl.obeuField.type);
-              $(input).typeahead('val', ctrl.obeuField.type.replace(/:/g,sep));
-              ctrl.setVal(ctrl.obeuField.type, false);
+            if (obeuCtrl.field.type) {
+              obeuCtrl.setSugg(obeuCtrl.field.type);
+              $(input).typeahead('val', obeuCtrl.field.type.replace(/:/g,sep));
+              obeuCtrl.setVal(obeuCtrl.field.type, false);
             }
             $(input).bind('typeahead:select', function(ev, sugg) {
-              ctrl.setSugg(sugg.val);
+              obeuCtrl.setSugg(sugg.val);
               if (!sugg.leaf) {
                 window.setTimeout(function() {
                   $(input).typeahead('val', sugg.text + sep);
@@ -931,14 +931,14 @@ var _ = require('lodash');
                 }, 100);
                 $scope.$applyAsync();
               } else {
-                ctrl.setVal(sugg.val, true);
+                obeuCtrl.setVal(sugg.val, true);
                 $scope.$applyAsync();
               }
             });
             $(clear).bind('click', function() {
               $(input).typeahead('val','');
-              ctrl.setSugg('');
-              ctrl.setVal('', true);
+              obeuCtrl.setSugg('');
+              obeuCtrl.setVal('', true);
             });
           }
         };
