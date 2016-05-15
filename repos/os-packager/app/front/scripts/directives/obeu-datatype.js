@@ -631,7 +631,7 @@ var OBEUTypes = class TypeProcessor {
         var allowedProperties = [
             'name', 'title', 'type', 'format', 'data', 'options', 'resource'  // common properties
         ];
-        valid = valid &&
+      /*  valid = valid &&
             _.every(fields, (f) => {
                 var diff = _.difference(_.keys(f), allowedProperties);
                 return (diff.length == 0) ||
@@ -644,7 +644,7 @@ var OBEUTypes = class TypeProcessor {
                     this._fieldError(f.name, "Got unknown type " + f.type);
             });
         // ... and no unknown additional options ...
-        valid = valid ; /*&& 
+        valid = valid && 
             _.every(fields, (f) => {
                 if ( !f.type ) { return true; }
                 var allowedOptions = _.union(
@@ -866,7 +866,7 @@ var _ = require('lodash');
                   return _.endsWith(sugg, ':');
                 },
                 setVal: function(val, clear) {
-                  this.field.type = val;
+                  this.field.obeuType = val;
                   if (clear) {
                     this.field.options = {};
                   }
@@ -881,66 +881,70 @@ var _ = require('lodash');
             field: '=',
             onChanged: '&'
           },
-          link: function($scope, element, attr, obeuCtrl) {
-            var input = element.find('.typeahead')[0];
-            var clear = element.find('.clear')[0];
-            var ot = new OBEUTypes();
-            var sep = ' ❯ ';
-            $(input).typeahead({
-              minLength: 0,
-              highlight: true
-            }, {
-              limit: 100,
-              source: function(query, sync) {
-                query = query.replace(new RegExp(sep,'g'),':');
-                sync(_.map(ot.autoComplete(query), function(sugg) {
-                  return {
-                    val: sugg,
-                    text: _.trimEnd(sugg, ':').replace(/:/g,sep),
-                    leaf: _.last(sugg) != ':'
-                  };
-                }));
-              },
-              display: function(sugg) {
-                return sugg.text;
-              },
-              templates: {
-                suggestion: function(sugg) {
-                  var suffix;
-                  if (!sugg.leaf) {
-                    suffix = ' ❯ ';
-                  } else {
-                    suffix = '';
-                  }
-                  var ret = _.last(_.split(sugg.text, sep)) + suffix;
-                  return '<div>' + ret + '</div>';
-                }
-              }
-            });
-            if (obeuCtrl.field.type) {
-              obeuCtrl.setSugg(obeuCtrl.field.type);
-              $(input).typeahead('val', obeuCtrl.field.type.replace(/:/g,sep));
-              obeuCtrl.setVal(obeuCtrl.field.type, false);
-            }
-            $(input).bind('typeahead:select', function(ev, sugg) {
-              obeuCtrl.setSugg(sugg.val);
-              if (!sugg.leaf) {
-                window.setTimeout(function() {
-                  $(input).typeahead('val', sugg.text + sep);
-                  $(input).typeahead('open');
-                }, 100);
-                $scope.$applyAsync();
-              } else {
-                obeuCtrl.setVal(sugg.val, true);
-                $scope.$applyAsync();
-              }
-            });
-            $(clear).bind('click', function() {
-              $(input).typeahead('val','');
-              obeuCtrl.setSugg('');
-              obeuCtrl.setVal('', true);
-            });
-          }
+            link: function($scope, element, attr, obeuCtrl) {
+		var label = element.find('.control-label')[0];
+		if (label.innerHTML === 'ObeuDataType'){
+		    console.log('in obeu-datatype.js');
+		    var input = element.find('.typeahead')[0];
+		    var clear = element.find('.clear')[0];
+		    var ot = new OBEUTypes();
+		    var sep = ' ❯ ';
+		    $(input).typeahead({
+			minLength: 0,
+			highlight: true
+		    }, {
+			limit: 100,
+			source: function(query, sync) {
+			    query = query.replace(new RegExp(sep,'g'),':');
+			    sync(_.map(ot.autoComplete(query), function(sugg) {
+				return {
+				    val: sugg,
+				    text: _.trimEnd(sugg, ':').replace(/:/g,sep),
+				    leaf: _.last(sugg) != ':'
+				};
+			    }));
+			},
+			display: function(sugg) {
+			    return sugg.text;
+			},
+			templates: {
+			    suggestion: function(sugg) {
+				var suffix;
+				if (!sugg.leaf) {
+				    suffix = ' ❯ ';
+				} else {
+				    suffix = '';
+				}
+				var ret = _.last(_.split(sugg.text, sep)) + suffix;
+				return '<div>' + ret + '</div>';
+			    }
+			}
+		    });
+		    if (obeuCtrl.field.obeuType) {
+			obeuCtrl.setSugg(obeuCtrl.field.obeuType);
+			$(input).typeahead('val', obeuCtrl.field.obeuType.replace(/:/g,sep));
+			obeuCtrl.setVal(obeuCtrl.field.obeuType, false);
+		    }
+		    $(input).bind('typeahead:select', function(ev, sugg) {
+			obeuCtrl.setSugg(sugg.val);
+			if (!sugg.leaf) {
+			    window.setTimeout(function() {
+				$(input).typeahead('val', sugg.text + sep);
+				$(input).typeahead('open');
+			    }, 100);
+			    $scope.$applyAsync();
+			} else {
+			    obeuCtrl.setVal(sugg.val, true);
+			    $scope.$applyAsync();
+			}
+		    });
+		    $(clear).bind('click', function() {
+			$(input).typeahead('val','');
+			obeuCtrl.setSugg('');
+			obeuCtrl.setVal('', true);
+		    });
+		}
+	    }
         };
       }
     ]);
