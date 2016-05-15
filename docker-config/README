@@ -1,0 +1,9 @@
+           
+                 Quick start to Openspending-Openbudgets.eu Sytem
+
+Step 1: type ./os_start to start Openspending system
+wait till the Openspending system is started
+
+Step 2: open another terminal, and go to the same directory (docker-config directory)
+Step 3: type ./obeu_start
+

@@ -1,0 +1,26 @@
+############################################## 
+# DO NOT CHANGE THIS FILE                    #
+# CODED BY TIANSI DONG (tian1shi2@gmail.com) #
+# VERSION: 0.1.0                             #
+# DATE MAY 15, 2016                          #
+############################################## 
+
+echo "checking obeu type..."
+if grep -c "\'obeuType\'" ../repos/os-packager/app/public/modules.js > /dev/null
+then
+   echo 'found obeu type'
+else
+   echo 'not found obeu type'
+   echo 'add obeu type'
+   sed -i .bak "s/\'title\'/\'title\'\,\'obeuType\'/g" ../repos/os-packager/app/public/modules.js
+fi
+echo 
+echo "checking datapackage2 extension..."
+if grep -c "obeuType: f.obeuType" ../repos/os-packager/app/public/modules.js > /dev/null
+then
+   echo 'found field extension of datapackage2'
+else
+   echo 'not found field extension of datapackage2'
+   echo 'extend to datapackage2'
+   sed -i .bak 's/osType: f.type\,/osType: f.type\, obeuType: f.obeuType\,/g' ../repos/os-packager/app/public/modules.js
+fi
